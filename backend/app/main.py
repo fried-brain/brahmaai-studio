@@ -53,17 +53,24 @@ def create_app(
         allow_headers=["Content-Type", "X-CSRF-Token"],
     )
 
+    @app.get("/api/v1/health/live", tags=["system"])
+    def liveness() -> dict[str, str]:
+        """Process liveness only; does not depend on external services."""
+        return {"status": "ok", "service": "brahmaai-studio-api"}
+
     @app.get("/api/v1/health", tags=["system"])
     def health() -> dict[str, str]:
-        database_state = "not_configured"
-        if engine is not None:
-            try:
-                with engine.connect() as connection:
-                    connection.execute(text("SELECT 1"))
-                database_state = "connected"
-            except SQLAlchemyError:
-                raise HTTPException(status_code=503, detail="Database unavailable") from None
-        return {"status": "ok", "service": "brahmaai-studio-api", "database": database_state}
+        """Readiness check used by deployment platforms and operators."""
+        if engine is None:
+            if resolved_settings.app_env.lower() == "production":
+                raise HTTPException(status_code=503, detail="Database is not configured")
+            return {"status": "ok", "service": "brahmaai-studio-api", "database": "not_configured"}
+        try:
+            with engine.connect() as connection:
+                connection.execute(text("SELECT 1"))
+        except SQLAlchemyError:
+            raise HTTPException(status_code=503, detail="Database unavailable") from None
+        return {"status": "ok", "service": "brahmaai-studio-api", "database": "connected"}
 
     app.include_router(auth_router, prefix="/api/v1")
     app.include_router(assistant_router, prefix="/api/v1")
