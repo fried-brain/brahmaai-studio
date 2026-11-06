@@ -24,3 +24,23 @@ def test_health_reports_connected_database_when_configured():
 
     assert response.status_code == 200
     assert response.json()["database"] == "connected"
+
+
+def test_production_health_requires_a_configured_database():
+    from app.core.config import Settings
+
+    client = TestClient(create_app(settings=Settings(app_env="production")))
+
+    response = client.get("/api/v1/health")
+
+    assert response.status_code == 503
+    assert response.json() == {"detail": "Database is not configured"}
+
+
+def test_liveness_is_available_without_database_configuration():
+    client = TestClient(create_app())
+
+    response = client.get("/api/v1/health/live")
+
+    assert response.status_code == 200
+    assert response.json() == {"status": "ok", "service": "brahmaai-studio-api"}
