@@ -1,0 +1,32 @@
+CATALOG = {
+    "bed_single": (1000, 2000, "Single bed", {"bedroom"}),
+    "bed_double": (1400, 2000, "Double bed", {"bedroom"}),
+    "bed_queen": (1525, 2030, "Queen bed", {"bedroom"}),
+    "bed_king": (1830, 2030, "King bed", {"bedroom"}),
+    "bedside_table": (450, 450, "Bedside table", {"bedroom"}),
+    "wardrobe": (1800, 600, "Wardrobe", {"bedroom"}),
+    "dresser": (1000, 450, "Dresser", {"bedroom"}),
+    "sofa_2": (1600, 850, "Two-seat sofa", {"living"}),
+    "sofa_3": (2100, 900, "Three-seat sofa", {"living"}),
+    "armchair": (850, 850, "Armchair", {"living"}),
+    "coffee_table": (1100, 600, "Coffee table", {"living"}),
+    "tv_console": (1600, 400, "TV console", {"living"}),
+    "dining_table_4": (1200, 800, "Four-seat dining table", {"dining"}),
+    "dining_chair": (450, 500, "Dining chair", {"dining"}),
+    "kitchen_counter": (1800, 600, "Kitchen counter", {"kitchen"}),
+    "refrigerator": (700, 700, "Refrigerator", {"kitchen"}),
+    "sink_unit": (900, 600, "Sink unit", {"kitchen"}),
+    "hob": (600, 600, "Hob", {"kitchen"}),
+    "wc": (400, 700, "WC", {"bathroom"}),
+    "washbasin": (600, 500, "Washbasin", {"bathroom"}),
+    "shower": (900, 900, "Shower", {"bathroom"}),
+    "bathtub": (1700, 750, "Bathtub", {"bathroom"}),
+    "desk": (1200, 600, "Desk", {"study", "utility"}),
+    "office_chair": (600, 600, "Office chair", {"study", "utility"}),
+    "bookshelf": (900, 300, "Bookshelf", {"study"}),
+    "washer": (650, 650, "Washer", {"utility"}),
+    "storage_cabinet": (900, 450, "Storage cabinet", {"utility"}),
+}
+
+def catalog_for_room(room_type: str) -> list[dict]:
+    return [{"catalog_type": key, "name": name, "width_mm": width, "depth_mm": depth, "room_types": sorted(types)} for key, (width, depth, name, types) in sorted(CATALOG.items()) if room_type in types]
