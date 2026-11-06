@@ -4,9 +4,8 @@ services:
     runtime: docker
     plan: starter
     region: singapore
-    rootDir: backend
-    dockerfilePath: ./Dockerfile
-    dockerContext: .
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
     preDeployCommand: alembic upgrade head
     healthCheckPath: /api/v1/health
     autoDeployTrigger: commit
