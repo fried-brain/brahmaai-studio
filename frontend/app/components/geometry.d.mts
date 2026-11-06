@@ -1,0 +1,11 @@
+export type PointMM = { x: number; y: number };
+export type RoomGeometry = { id: string; vertices_mm: PointMM[]; [key: string]: unknown };
+export type WallGeometry = { id: string; start_mm: PointMM; end_mm: PointMM; length_mm: number; room_ids: string[] };
+export function snapToGrid(value: number, grid?: number): number;
+export function rectangleVertices(start: PointMM, end: PointMM): PointMM[];
+export function translateRoom<T extends RoomGeometry>(room: T, dx: number, dy: number): T;
+export function resizeRoomFromCorner<T extends RoomGeometry>(room: T, x: number, y: number): T;
+export function deriveWalls(rooms: RoomGeometry[]): WallGeometry[];
+export function moveRoomVertex<T extends RoomGeometry>(room: T, vertexIndex: number, x: number, y: number): T;
+export function polygonAreaSqFt(vertices: PointMM[]): number;
+export function polygonPerimeterMm(vertices: PointMM[]): number;
