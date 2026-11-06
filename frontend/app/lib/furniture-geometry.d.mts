@@ -12,3 +12,4 @@ export function moveFurniture<T extends FurnitureItem>(item: T, x_mm: number, y_
 export function resizeFurniture<T extends FurnitureItem>(item: T, width_mm: number, depth_mm: number): T;
 export function duplicateFurniture<T extends FurnitureItem>(item: T, item_id: string): T;
 export function serializeFurniture<T extends FurnitureItem>(items: T[]): T[];
+export function pointInRoom(point: { x: number; y: number }, vertices: { x: number; y: number }[]): boolean;

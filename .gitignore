@@ -31,3 +31,4 @@ Thumbs.db
 *.log
 .vscode/
 .idea/
+backend/*.egg-info/
