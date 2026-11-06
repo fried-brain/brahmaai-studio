@@ -24,3 +24,14 @@ def test_health_reports_connected_database_when_configured():
 
     assert response.status_code == 200
     assert response.json()["database"] == "connected"
+
+
+def test_production_health_requires_a_configured_database():
+    from app.core.config import Settings
+
+    client = TestClient(create_app(settings=Settings(app_env="production")))
+
+    response = client.get("/api/v1/health")
+
+    assert response.status_code == 503
+    assert response.json() == {"detail": "Database is not configured"}
